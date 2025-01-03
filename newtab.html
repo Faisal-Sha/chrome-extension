@@ -9,19 +9,60 @@
       background-color: #042955;
       height: 100vh;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
+      font-family: Arial, sans-serif;
+      color: white;
+      text-align: center;
+    }
+
+    #time {
+      font-size: 72px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    #date {
+      font-size: 24px;
+      margin-bottom: 40px;
     }
 
     .title {
-      color: white;
-      font-family: Arial, sans-serif;
       font-size: 48px;
       font-weight: bold;
+      margin-bottom: 30px;
+    }
+
+    #daily-tip {
+      max-width: 600px;
+      margin-bottom: 20px;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+    }
+
+    #tip-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #4CAF50;
+    }
+
+    #tip-content {
+      font-size: 16px;
+      line-height: 1.5;
     }
   </style>
 </head>
 <body>
+  <div id="time"></div>
+  <div id="date"></div>
   <div class="title">CODING CHALLENGES>_</div>
+  <div id="daily-tip">
+    <div id="tip-title">Daily Coding Tip</div>
+    <div id="tip-content"></div>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
