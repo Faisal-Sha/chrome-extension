@@ -1,23 +1,4 @@
-// Coding tips array
-const codingTips = [
-    "Use meaningful variable names to make your code self-documenting",
-    "Write unit tests before implementing new features (TDD)",
-    "Keep your functions small and focused on a single task",
-    "Comment your code, but prefer self-documenting code when possible",
-    "Learn keyboard shortcuts for your IDE to boost productivity",
-    "Regularly review and refactor your code to maintain quality",
-    "Use version control even for small projects",
-    "Handle errors gracefully with try-catch blocks",
-    "Cache expensive operations to improve performance",
-    "Keep your dependencies up to date but stable",
-    "Take regular breaks to maintain productivity and prevent burnout",
-    "Document your APIs and public interfaces",
-    "Use code linting tools to maintain consistent style",
-    "Practice pair programming to share knowledge",
-    "Backup your work regularly"
-  ];
-  
-  function updateDateTime() {
+function updateDateTime() {
     const now = new Date();
     
     // Update time in HH:MM format
@@ -35,24 +16,36 @@ const codingTips = [
     document.getElementById('date').textContent = now.toLocaleDateString('en-US', options);
   }
   
-  function getDailyTip() {
-    // Use the date to get a consistent tip for the whole day
-    const today = new Date().toDateString();
-    // Create a simple hash of the date string
-    const hash = today.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    // Use the hash to select a tip
-    const tipIndex = hash % codingTips.length;
-    return codingTips[tipIndex];
+  async function fetchPRs() {
+    try {
+      const response = await fetch('https://api.github.com/repos/CodingChallengesFYI/SharedSolutions/pulls');
+      const prs = await response.json();
+      
+      // Update PR count
+      const prCount = document.querySelector('.pr-count');
+      prCount.textContent = `There are ${prs.length} PRs open for Shared Solutions:`;
+      
+      // Update PR list
+      const prList = document.querySelector('.pr-list');
+      prList.innerHTML = '';
+      
+      prs.forEach((pr, index) => {
+        const li = document.createElement('li');
+        li.className = 'pr-item';
+        li.textContent = `${index + 1}. ${pr.title}`;
+        prList.appendChild(li);
+      });
+    } catch (error) {
+      console.error('Error fetching PRs:', error);
+      const prSection = document.getElementById('pr-section');
+      prSection.innerHTML = 'Error loading PRs. Please refresh the page.';
+    }
   }
   
-  function updateTip() {
-    const tipContent = document.getElementById('tip-content');
-    tipContent.textContent = getDailyTip();
-  }
-  
-  // Update immediately and then every second for time
+  // Update time immediately and then every second
   updateDateTime();
   setInterval(updateDateTime, 1000);
   
-  // Set the daily tip (this only needs to be done once)
-  updateTip();
+  // Fetch PRs immediately and then every 5 minutes
+  fetchPRs();
+  setInterval(fetchPRs, 5 * 60 * 1000);
